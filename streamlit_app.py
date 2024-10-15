@@ -157,4 +157,9 @@ for i, country in enumerate(selected_countries):
 
 ''
 
-print(gdp_df)
+st.line_chart(
+    filtered_gdp_df,
+    x='Year',
+    y='GDP',
+    color='Country Code',
+)
