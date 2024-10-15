@@ -57,6 +57,24 @@ def get_gdp_data():
 
     return gdp_df
 
+
+# second datasource ukc
+DATA_FILENAME2 = Path(__file__).parent/'Bill2233_Logbook (2).xlsx'
+ukc_df=pd.read_excel(DATA_FILENAME2)
+ukc_df[['style','style category']] = ukc_df['Style'].str.split(' ',expand=True)
+ukc_df=ukc_df.drop(columns=['Style'])
+ukc_df.rename(columns={'Partner(s)': 'Partner'}, inplace=True)
+#add index
+ukc_df['log_id'] = ukc_df.index + 1
+#convert date
+ukc_df['Date']=pd.to_datetime(ukc_df['Date'], format='%d/%b/%y')
+#only show rows from this year
+ukc_df=ukc_df[(ukc_df['Date'] > start_date)]
+ukc_df["first star"]= ukc_df["Grade"].str.find('*')
+ukc_df[['overall grade','technical grade', 'star rating']] = ukc_df['Grade'].str.split(' ',expand=True)
+
+
+
 gdp_df = get_gdp_data()
 
 # -----------------------------------------------------------------------------
@@ -149,3 +167,10 @@ for i, country in enumerate(selected_countries):
             delta=growth,
             delta_color=delta_color
         )
+
+
+''
+
+''
+
+print(ukc_df)
